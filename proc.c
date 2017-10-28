@@ -409,6 +409,8 @@ scheduler(void)
   }
 }
 
+
+
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
 // intena because intena is a property of this
@@ -444,6 +446,8 @@ yield(void)
   sched();
   release(&ptable.lock);
 }
+
+
 
 // A fork child's very first scheduling by scheduler()
 // will swtch here.  "Return" to user space.
