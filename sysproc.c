@@ -26,9 +26,22 @@ sys_exit(void)
 int
 sys_wait(void)
 {
-  int status;
-  argint(0, &status);
-  return wait(&status);
+  int* status;
+  argptr(0, (char **) &status, sizeof(int*));
+  return wait(status);
+}
+
+int
+sys_waitpid(void){
+
+  int pid;
+  int* status;
+  int options;
+  
+  argint(0, &pid);
+  argptr(0, (char **) &status, sizeof(int*));
+  argint(0, &options);
+  return waitpid(pid, status, options);
 }
 
 int

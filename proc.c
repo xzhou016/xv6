@@ -277,7 +277,7 @@ wait(int *status)
   int havekids, pid;
   struct proc *curproc = myproc();
 
-  *status = curproc->status;
+  curproc->status = *status;
   
   acquire(&ptable.lock);
   for(;;){
@@ -313,6 +313,57 @@ wait(int *status)
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
   }
 }
+
+//Custom syscall, This system call must act like wait system call with the following additional properties: 
+//It must wait for a process (not necessary a child process) with a pid that equals to one provided by the pid argument.
+//The return value must be the process id of the process that was terminated,
+//Or -1 if this process does not exist or if an unexpected error occurred.
+int waitpid (int pid, int *status, int options){
+
+  struct proc *p;
+  int pfound;
+  struct proc *curproc = myproc();
+
+  curproc->status = *status;
+  curproc->pid = pid;
+  
+  acquire(&ptable.lock);
+  for(;;){
+    // Scan through table looking for exited children.
+    pfound = 0;
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->parent != curproc)
+        continue;
+      pfound = 1;
+      if(p->pid == curproc->pid){
+        // Found one.
+        pid = p->pid;
+        kfree(p->kstack);
+        p->kstack = 0;
+        freevm(p->pgdir);
+        p->pid = 0;
+        p->parent = 0;
+        p->name[0] = 0;
+        p->killed = 0;
+        p->state = UNUSED;
+        release(&ptable.lock);
+        return pid;
+      }
+    }
+
+    // No point waiting if we don't have any children.
+    if(!pfound || curproc->killed){
+      release(&ptable.lock);
+      curproc->pid = -1;
+      return -1;
+    }
+
+
+    // Wait for children to exit.  (See wakeup1 call in proc_exit.)
+    sleep(curproc, &ptable.lock);  //DOC: wait-sleep
+  }
+}
+
 
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
