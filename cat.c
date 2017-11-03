@@ -12,12 +12,12 @@ cat(int fd)
   while((n = read(fd, buf, sizeof(buf))) > 0) {
     if (write(1, buf, n) != n) {
       printf(1, "cat: write error\n");
-      exit(0);
+      exit(1);
     }
   }
   if(n < 0){
     printf(1, "cat: read error\n");
-    exit(0);
+    exit(1);
   }
 }
 
@@ -28,7 +28,7 @@ main(int argc, char *argv[])
 
   if(argc <= 1){
     cat(0);
-    exit(0);
+    exit(1);
   }
 
   for(i = 1; i < argc; i++){
@@ -40,4 +40,5 @@ main(int argc, char *argv[])
     close(fd);
   }
   exit(0);
+  return 0;
 }
