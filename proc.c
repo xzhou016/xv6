@@ -253,6 +253,11 @@ exit(int status)
   // Parent might be sleeping in wait().
   wakeup1(curproc->parent);
 
+  //wake up the children
+  
+
+
+
   // Pass abandoned children to init.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->parent == curproc){
@@ -335,7 +340,7 @@ int waitpid (int pid, int *status, int options){
       if(p->pid != pid)
         continue;
       pfound = 1;
-      if(p->pid == pid){
+      if(p->state == ZOMBIE){
         // Found one.
         pid = p->pid;
         kfree(p->kstack);
@@ -354,7 +359,9 @@ int waitpid (int pid, int *status, int options){
     // No point waiting if we don't have any children.
     if(!pfound || curproc->killed){
       release(&ptable.lock);
-      pid = -1;
+      if(status)
+        curproc->status = -1;
+
       return pid;
     }
 
