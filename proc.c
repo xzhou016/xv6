@@ -397,7 +397,7 @@ scheduler(void)
   for(;;){
     // Enable interrupts on this processor.
     sti();
-    max = 0;
+    max = 99999;
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
 
@@ -406,7 +406,7 @@ scheduler(void)
 
     	if(p->state != RUNNABLE)
 	        continue;
-    	if (p->priority > max)
+    	if (p->priority <= max)
     	{
     		max = p->priority;
 
@@ -416,7 +416,7 @@ scheduler(void)
 
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
 
-    	if (p->state == RUNNABLE && p->priority >= max)
+    	if (p->state == RUNNABLE && p->priority <= max)
     	{
 	      // Switch to chosen process.  It is the process's job
 	      // to release ptable.lock and then reacquire it
