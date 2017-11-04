@@ -105,7 +105,8 @@ int             pipewrite(struct pipe*, char*, int);
 // proc.c
 int             cpuid(void);
 //void            exit(void);
-void			exit(int status);
+void			exit(int status); //CS153
+void 			setpriority(int);
 int             fork(void);
 int             growproc(int);
 int             kill(int);

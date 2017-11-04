@@ -9,7 +9,6 @@
 
 struct {
   struct spinlock lock;
-  ////
   struct proc proc[NPROC];
 } ptable;
 
@@ -89,6 +88,8 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+
+  p->priority = 20;  //assign a priority //CS153 
 
   release(&ptable.lock);
 
@@ -226,7 +227,7 @@ fork(void)
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
 void
-exit(int status)
+exit(int status) //CS153 
 {
   struct proc *curproc = myproc();
   struct proc *p;
@@ -272,7 +273,7 @@ exit(int status)
 // Wait for a child process to exit and return its pid.
 // Return -1 if this process has no children.
 int
-wait(int *status)
+wait(int *status) //CS153
 {
   struct proc *p;
   int havekids, pid;
@@ -316,6 +317,7 @@ wait(int *status)
   }
 }
 
+//CS153
 //Custom syscall, This system call must act like wait system call with the following additional properties: 
 //It must wait for a process (not necessary a child process) with a pid that equals to one provided by the pid argument.
 //The return value must be the process id of the process that was terminated,
@@ -370,7 +372,11 @@ int waitpid (int pid, int *status, int options){
   }
 }
 
-
+//CS 153
+void setpriority(int priority){
+	struct proc * current = myproc();
+	current->priority = priority;
+}
 
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
@@ -386,34 +392,50 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
+  int max;
   
   for(;;){
     // Enable interrupts on this processor.
     sti();
-
+    max = 0;
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
+
+    //get the max priority
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
-        continue;
 
-      // Switch to chosen process.  It is the process's job
-      // to release ptable.lock and then reacquire it
-      // before jumping back to us.
-      c->proc = p;
-      switchuvm(p);
-      p->state = RUNNING;
+    	if(p->state != RUNNABLE)
+	        continue;
+    	if (p->priority > max)
+    	{
+    		max = p->priority;
 
-      swtch(&(c->scheduler), p->context);
-      switchkvm();
+    	}
+
+    }
+
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+
+    	if (p->state == RUNNABLE && p->priority >= max)
+    	{
+	      // Switch to chosen process.  It is the process's job
+	      // to release ptable.lock and then reacquire it
+	      // before jumping back to us.
+	      c->proc = p;
+	      switchuvm(p);
+	      p->state = RUNNING;
+
+	      swtch(&(c->scheduler), p->context);
+	      switchkvm();
+	    }
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       c->proc = 0;
     }
     release(&ptable.lock);
+	}
 
-  }
 }
 
 
@@ -596,4 +618,4 @@ procdump(void)
     }
     cprintf("\n");
   }
-
+}

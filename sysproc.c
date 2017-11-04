@@ -13,6 +13,7 @@ sys_fork(void)
   return fork();
 }
 
+//CS153
 int
 sys_exit(void)
 {
@@ -23,6 +24,7 @@ sys_exit(void)
   return 0;  // not reached
 }
 
+//CS153
 int
 sys_wait(void)
 {
@@ -31,6 +33,7 @@ sys_wait(void)
   return wait(status);
 }
 
+//CS153
 int
 sys_waitpid(void){
 
@@ -43,6 +46,16 @@ sys_waitpid(void){
   argint(2, &options);
   return waitpid(pid, status, options);
 }
+
+//CS153
+int
+sys_setpriority(void){
+  int priority;
+  argint(0, &priority);
+  setpriority(priority);
+  return 0; // never reached
+}
+
 
 int
 sys_kill(void)
