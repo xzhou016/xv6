@@ -9,6 +9,7 @@
 
 struct {
   struct spinlock lock;
+  ////
   struct proc proc[NPROC];
 } ptable;
 
@@ -253,11 +254,6 @@ exit(int status)
   // Parent might be sleeping in wait().
   wakeup1(curproc->parent);
 
-  //wake up the children
-  
-
-
-
   // Pass abandoned children to init.
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->parent == curproc){
@@ -373,6 +369,7 @@ int waitpid (int pid, int *status, int options){
     sleep(curproc, &ptable.lock);  //DOC: wait-sleep
   }
 }
+
 
 
 //PAGEBREAK: 42
@@ -599,4 +596,4 @@ procdump(void)
     }
     cprintf("\n");
   }
-}
+
