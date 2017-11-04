@@ -281,8 +281,6 @@ wait(int *status)
   struct proc *p;
   int havekids, pid;
   struct proc *curproc = myproc();
-
-  curproc->status = *status;
   
   acquire(&ptable.lock);
   for(;;){
@@ -303,6 +301,9 @@ wait(int *status)
         p->name[0] = 0;
         p->killed = 0;
         p->state = UNUSED;
+	if(status){
+		*status = p->status;
+	}
         release(&ptable.lock);
         return pid;
       }
@@ -360,9 +361,8 @@ int waitpid (int pid, int *status, int options){
     if(!pfound || curproc->killed){
       release(&ptable.lock);
       if(status)
-        curproc->status = -1;
-
-      return pid;
+        *status = -1;
+      return -1;
     }
 
 
