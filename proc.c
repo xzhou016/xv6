@@ -223,11 +223,12 @@ fork(void)
   return pid;
 }
 
+//CS153
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
 void
-exit(int status) //CS153 
+exit(int status)
 {
   struct proc *curproc = myproc();
   struct proc *p;
@@ -270,10 +271,11 @@ exit(int status) //CS153
   panic("zombie exit");
 }
 
+//CS153
 // Wait for a child process to exit and return its pid.
 // Return -1 if this process has no children.
 int
-wait(int *status) //CS153
+wait(int *status)
 {
   struct proc *p;
   int havekids, pid;
@@ -317,7 +319,7 @@ wait(int *status) //CS153
   }
 }
 
-//CS153
+//CS153,
 //Custom syscall, This system call must act like wait system call with the following additional properties: 
 //It must wait for a process (not necessary a child process) with a pid that equals to one provided by the pid argument.
 //The return value must be the process id of the process that was terminated,
@@ -378,6 +380,7 @@ void setpriority(int priority){
 	current->priority = priority;
 }
 
+//CS153
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -397,7 +400,7 @@ scheduler(void)
   for(;;){
     // Enable interrupts on this processor.
     sti();
-    max = 99999;
+    max = 99999; // max 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
 
@@ -409,11 +412,11 @@ scheduler(void)
     	if (p->priority <= max)
     	{
     		max = p->priority;
-
     	}
 
     }
 
+    //context switch
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
 
     	if (p->state == RUNNABLE && p->priority <= max)

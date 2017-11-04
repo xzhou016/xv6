@@ -105,8 +105,8 @@ int             pipewrite(struct pipe*, char*, int);
 // proc.c
 int             cpuid(void);
 //void            exit(void);
-void			exit(int status); //CS153
-void 			setpriority(int);
+void			exit(int status); //CS153 system call to pass exit status
+void 			setpriority(int); //CS153 set the priority to current process
 int             fork(void);
 int             growproc(int);
 int             kill(int);
@@ -119,8 +119,8 @@ void            sched(void);
 void            setproc(struct proc*);
 void            sleep(void*, struct spinlock*);
 void            userinit(void);
-int             wait(int *status);
-int 			waitpid(int pid, int *status, int options);
+int             wait(int *status); //CS153 get the current status of the process to determine to wait or not
+int 			waitpid(int pid, int *status, int options); //CS153 get the current wait status and return the pid
 void            wakeup(void*);
 void            yield(void);
 
