@@ -89,8 +89,6 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
 
-  p->priority = 20;  //assign a priority //CS153 
-
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -223,17 +221,15 @@ fork(void)
   return pid;
 }
 
-//CS153
 // Exit the current process.  Does not return.
 // An exited process remains in the zombie state
 // until its parent calls wait() to find out it exited.
 void
-exit(int status)
+exit(void)
 {
   struct proc *curproc = myproc();
   struct proc *p;
   int fd;
-  curproc->status = status;
 
   if(curproc == initproc)
     panic("init exiting");
@@ -271,11 +267,10 @@ exit(int status)
   panic("zombie exit");
 }
 
-//CS153
 // Wait for a child process to exit and return its pid.
 // Return -1 if this process has no children.
 int
-wait(int *status)
+wait(void)
 {
   struct proc *p;
   int havekids, pid;
@@ -300,9 +295,6 @@ wait(int *status)
         p->name[0] = 0;
         p->killed = 0;
         p->state = UNUSED;
-	if(status){
-		*status = p->status;
-	}
         release(&ptable.lock);
         return pid;
       }
@@ -319,68 +311,6 @@ wait(int *status)
   }
 }
 
-//CS153,
-//Custom syscall, This system call must act like wait system call with the following additional properties: 
-//It must wait for a process (not necessary a child process) with a pid that equals to one provided by the pid argument.
-//The return value must be the process id of the process that was terminated,
-//Or -1 if this process does not exist or if an unexpected error occurred.
-int waitpid (int pid, int *status, int options){
-
-  struct proc *p;
-  int pfound;
-  struct proc *curproc = myproc();
-
-  //curproc->status = *status;
-  //curproc->pid = pid;
-  
-  acquire(&ptable.lock);
-  for(;;){
-    // Scan through table looking for exited children.
-    pfound = 0;
-    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->pid != pid)
-        continue;
-      pfound = 1;
-      if(p->state == ZOMBIE){
-        // Found one.
-        pid = p->pid;
-        kfree(p->kstack);
-        p->kstack = 0;
-        freevm(p->pgdir);
-        p->pid = 0;
-        p->parent = 0;
-        p->name[0] = 0;
-        p->killed = 0;
-        p->state = UNUSED;
-	if(status){
-		*status = p->status;
-	}
-        release(&ptable.lock);
-        return pid;
-      }
-    }
-
-    // No point waiting if we don't have any children.
-    if(!pfound || curproc->killed){
-      release(&ptable.lock);
-      if(status)
-        *status = -1;
-      return -1;
-    }
-
-
-    // Wait for children to exit.  (See wakeup1 call in proc_exit.)
-    sleep(curproc, &ptable.lock);  //DOC: wait-sleep
-  }
-}
-
-//CS 153
-void setpriority(int priority){
-	struct proc * current = myproc();
-	current->priority = priority;
-}
-
-//CS153
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -395,53 +325,35 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
-  int max;
   
   for(;;){
     // Enable interrupts on this processor.
     sti();
-    max = 99999; // max 
+
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
-
-    //get the max priority
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->state != RUNNABLE)
+        continue;
 
-    	if(p->state != RUNNABLE)
-	        continue;
-    	if (p->priority <= max)
-    	{
-    		max = p->priority;
-    	}
+      // Switch to chosen process.  It is the process's job
+      // to release ptable.lock and then reacquire it
+      // before jumping back to us.
+      c->proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
 
-    }
-
-    //context switch
-    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-
-    	if (p->state == RUNNABLE && p->priority <= max)
-    	{
-	      // Switch to chosen process.  It is the process's job
-	      // to release ptable.lock and then reacquire it
-	      // before jumping back to us.
-	      c->proc = p;
-	      switchuvm(p);
-	      p->state = RUNNING;
-
-	      swtch(&(c->scheduler), p->context);
-	      switchkvm();
-	    }
+      swtch(&(c->scheduler), p->context);
+      switchkvm();
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       c->proc = 0;
     }
     release(&ptable.lock);
-	}
 
+  }
 }
-
-
 
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
@@ -478,8 +390,6 @@ yield(void)
   sched();
   release(&ptable.lock);
 }
-
-
 
 // A fork child's very first scheduling by scheduler()
 // will swtch here.  "Return" to user space.

@@ -29,5 +29,5 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
-SYSCALL(waitpid) #CS153 system call for waitpid
-SYSCALL(setpriority) #CS153 system call for setpriority
+SYSCALL(shm_open)
+SYSCALL(shm_close)	

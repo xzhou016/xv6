@@ -7,55 +7,46 @@
 #include "mmu.h"
 #include "proc.h"
 
+int sys_shm_open(void) {
+  int id;
+  char **pointer;
+
+  if(argint(0, &id) < 0)
+    return -1;
+
+  if(argptr(1, (char **) (&pointer),4)<0)
+    return -1;
+  return shm_open(id, pointer);
+}
+
+int sys_shm_close(void) {
+  int id;
+
+  if(argint(0, &id) < 0)
+    return -1;
+
+  
+  return shm_close(id);
+}
+
 int
 sys_fork(void)
 {
   return fork();
 }
 
-//CS153
 int
 sys_exit(void)
 {
-  int status;
-  argint(0, &status);
-  exit(status);
-  //exit();
+  exit();
   return 0;  // not reached
 }
 
-//CS153
 int
 sys_wait(void)
 {
-  int* status;
-  argptr(0, (char **) &status, sizeof(int*));
-  return wait(status);
+  return wait();
 }
-
-//CS153
-int
-sys_waitpid(void){
-
-  int pid;
-  int* status;
-  int options;
-  
-  argint(0, &pid);
-  argptr(1, (char **) &status, sizeof(int*));
-  argint(2, &options);
-  return waitpid(pid, status, options);
-}
-
-//CS153
-int
-sys_setpriority(void){
-  int priority;
-  argint(0, &priority);
-  setpriority(priority);
-  return 0; // never reached
-}
-
 
 int
 sys_kill(void)

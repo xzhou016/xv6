@@ -1,0 +1,343 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"a",
+				"array\t$… = array (…)"
+			],
+			[
+				"in",
+				"input\tTag"
+			],
+			[
+				"R",
+				"register"
+			],
+			[
+				"form",
+				"form-control"
+			],
+			[
+				"di",
+				"div\tTag"
+			],
+			[
+				"se",
+				"sys_setpriority"
+			],
+			[
+				"ar",
+				"argptr"
+			],
+			[
+				"SYS",
+				"SYSCALL"
+			],
+			[
+				"de",
+				"define"
+			],
+			[
+				"p",
+				"priority"
+			],
+			[
+				"pr",
+				"proc"
+			],
+			[
+				"my",
+				"myproc"
+			],
+			[
+				"cur",
+				"current"
+			],
+			[
+				"m",
+				"myprocess"
+			],
+			[
+				"pri",
+				"priority"
+			],
+			[
+				"pid",
+				"pid"
+			],
+			[
+				"Pro",
+				"PriorityQueue"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "usertests.c",
+			"settings":
+			{
+				"buffer_size": 34697,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv000818/Bv0008f0/usys.S",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv000818/Bv0008b2/sysproc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv000818/Bv00084d/syscall.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv000818/Bv000818/proc.c",
+		"/C/Users/jakex/Documents/Github/SegFault/api/member/register.php",
+		"/C/Users/jakex/Documents/Github/SegFault/templates/default/captcha_test.html",
+		"/C/Users/jakex/Documents/Github/SegFault/core/class/member.class.php",
+		"/C/Users/jakex/Documents/Github/SegFault/core/core.php",
+		"/C/Users/jakex/Documents/Github/SegFault/.gitignore",
+		"/C/xampp/phpMyAdmin/config.inc.php",
+		"/C/xampp/php/php.ini",
+		"/C/Users/jakex/Documents/Github/SegFault/index.php",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv003225/Bv004861/syscall.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv003225/Bv005394/usys.S",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv003225/Bv0042c7/defs.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv003225/Bv0040bd/proc.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv003225/Bv003225/proc.c",
+		"/C/Users/jakex/Downloads/lab1_/xv6/fs.h",
+		"/C/Users/jakex/Downloads/lab1_/xv6/ide.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv00561f/proc.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv0022ac/sysproc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv002257/usys.S",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv0021aa/syscall.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv001c5f/user.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv00212e/syscall.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv0000d8/defs.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv004a3f/proc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv000c94/lab1.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv00589f/syscall.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv005b15/sysfile.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv005a24/defs.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv0059d2/user.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv005aad/syscall.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv005a86/syscall.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv004696/Bv00599b/syscall.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv001a8d/defs.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv0019d3/sysproc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv0040c5/proc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv001906/user.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv004007/proc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv001bb6/proc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv001bcd/proc.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv000da4/Bv0017be/lab1.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv000da4/Bv000da4/proc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv00187d/ls.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv00181b/ln.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv0017a9/kill.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv0016d1/grep.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv00165c/forktest.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv001591/echo.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv001591/Bv00211d/proc.c",
+		"/C/Users/jakex/Google Drive/Fall 2017/CS 170/project_1.c",
+		"/C/Users/jakex/Google Drive/Fall 2017/CS 170/project_1.h",
+		"/C/Users/jakex/Google Drive/Fall 2017/CS 170/project_1.py",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv0073c2/Bv0073c2/.gdbinit",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv0004ac/Bv0004ac/.gdbinit",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv002dd4/Bv002dd4/proc.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv002dd4/Bv0050ae/usertests.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv002dd4/Bv004b94/sysproc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv002dd4/Bv0049ad/defs.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv002dd4/Bv0047d0/user.h",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv002dd4/Bv004ccd/proc.c",
+		"/C/Users/jakex/AppData/Local/Temp/BvSshSftp/Bv002dd4/Bv0052e9/proc.c"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"scheduler",
+			"exit",
+			"scheduler",
+			"sched",
+			"scheduler",
+			"exit",
+			"scheduler",
+			"ptable",
+			"exit",
+			"wakeup1",
+			"exit"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "usertests.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 34697,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 229.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -57,7 +57,7 @@ struct cmd *parsecmd(char*);
 void
 runcmd(struct cmd *cmd)
 {
-  int p[2], child_status;
+  int p[2];
   struct backcmd *bcmd;
   struct execcmd *ecmd;
   struct listcmd *lcmd;
@@ -65,7 +65,7 @@ runcmd(struct cmd *cmd)
   struct redircmd *rcmd;
 
   if(cmd == 0)
-    exit(0);
+    exit();
 
   switch(cmd->type){
   default:
@@ -74,7 +74,7 @@ runcmd(struct cmd *cmd)
   case EXEC:
     ecmd = (struct execcmd*)cmd;
     if(ecmd->argv[0] == 0)
-      exit(0);
+      exit();
     exec(ecmd->argv[0], ecmd->argv);
     printf(2, "exec %s failed\n", ecmd->argv[0]);
     break;
@@ -84,7 +84,7 @@ runcmd(struct cmd *cmd)
     close(rcmd->fd);
     if(open(rcmd->file, rcmd->mode) < 0){
       printf(2, "open %s failed\n", rcmd->file);
-      exit(1);
+      exit();
     }
     runcmd(rcmd->cmd);
     break;
@@ -93,7 +93,7 @@ runcmd(struct cmd *cmd)
     lcmd = (struct listcmd*)cmd;
     if(fork1() == 0)
       runcmd(lcmd->left);
-    wait(&child_status);
+    wait();
     runcmd(lcmd->right);
     break;
 
@@ -117,8 +117,8 @@ runcmd(struct cmd *cmd)
     }
     close(p[0]);
     close(p[1]);
-    wait(&child_status);
-    wait(&child_status);
+    wait();
+    wait();
     break;
 
   case BACK:
@@ -127,7 +127,7 @@ runcmd(struct cmd *cmd)
       runcmd(bcmd->cmd);
     break;
   }
-  exit(0);
+  exit();
 }
 
 int
@@ -144,7 +144,6 @@ getcmd(char *buf, int nbuf)
 int
 main(void)
 {
-  int child_status; //get child exit stat
   static char buf[100];
   int fd;
 
@@ -167,16 +166,16 @@ main(void)
     }
     if(fork1() == 0)
       runcmd(parsecmd(buf));
-    wait(&child_status);
+    wait();
   }
-  exit(0);
+  exit();
 }
 
 void
 panic(char *s)
 {
   printf(2, "%s\n", s);
-  exit(0);
+  exit();
 }
 
 int

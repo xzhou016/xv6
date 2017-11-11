@@ -20,5 +20,5 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
-#define SYS_waitpid 22 //CS153 system call number waitpid
-#define SYS_setpriority 23 //CS153 system call numer for setpriority
+#define SYS_shm_open 22
+#define SYS_shm_close 23
