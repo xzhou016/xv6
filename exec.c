@@ -18,7 +18,7 @@ exec(char *path, char **argv)
   struct proghdr ph;
   pde_t *pgdir, *oldpgdir;
   struct proc *curproc = myproc();
-
+  curproc->stackSize = 1;		// Counter starts with stack of one page
   begin_op();
 
   if((ip = namei(path)) == 0){
@@ -60,13 +60,13 @@ exec(char *path, char **argv)
   end_op();
   ip = 0;
 
-  // Allocate two pages at the next page boundary.
-  // Make the first inaccessible.  Use the second as the user stack.
+  // Allocate a single page containing the stack
+  // The stack begins at the top page of the user part of memory
   sz = PGROUNDUP(sz);
-  if((sz = allocuvm(pgdir, sz, sz + 2*PGSIZE)) == 0)
+  if((sz = allocuvm(pgdir, STACKBASE - PGSIZE, STACKBASE)) == 0)
     goto bad;
-  clearpteu(pgdir, (char*)(sz - 2*PGSIZE));
-  sp = sz;
+  // clearpteu(pgdir, (char*)(sz - 2*PGSIZE));
+  sp = KERNBASE - 4;		//If not working, try w/ #1
 
   // Push argument strings, prepare rest of stack in ustack.
   for(argc = 0; argv[argc]; argc++) {
