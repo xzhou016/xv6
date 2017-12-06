@@ -312,12 +312,13 @@ clearpteu(pde_t *pgdir, char *uva)
 
 // Given a parent process's page table, create a copy
 // of it for a child.
+// Add uint sp parameter. sp points to STACKBASE
 pde_t*
-copyuvm(pde_t *pgdir, uint sz)
+copyuvm(pde_t *pgdir, uint sz, uint sp)
 {
   pde_t *d;
   pte_t *pte;
-  uint pa, i, flags;
+  uint pa, i, cutoff, flags;
   char *mem;
   struct proc *curproc = myproc();
 
@@ -336,8 +337,8 @@ copyuvm(pde_t *pgdir, uint sz)
     if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
       goto bad;
   }
- 
-  for(i = STACKBASE; i >= curproc->stackSize; i -= PGSIZE){
+  cutoff = STACKBASE - curproc->stackSize * PGSIZE;
+  for(i = STACKBASE; i > cutoff; i -= PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
       panic("copyuvm: pte should exist");
     if(!(*pte & PTE_P))

@@ -18,7 +18,6 @@ exec(char *path, char **argv)
   struct proghdr ph;
   pde_t *pgdir, *oldpgdir;
   struct proc *curproc = myproc();
-  curproc->stackSize = 1;		// Counter starts with stack of one page
   begin_op();
 
   if((ip = namei(path)) == 0){
@@ -63,10 +62,10 @@ exec(char *path, char **argv)
   // Allocate a single page containing the stack
   // The stack begins at the top page of the user part of memory
   sz = PGROUNDUP(sz);
-  if((sz = allocuvm(pgdir, STACKBASE - PGSIZE, STACKBASE)) == 0)
+  if((allocuvm(pgdir, STACKBASE - PGSIZE, STACKBASE)) == 0)
     goto bad;
   // clearpteu(pgdir, (char*)(sz - 2*PGSIZE));
-  sp = KERNBASE - 4;		//If not working, try w/ #1
+  sp = STACKBASE;		//If not working, try w/ #1
 
   // Push argument strings, prepare rest of stack in ustack.
   for(argc = 0; argv[argc]; argc++) {
@@ -99,6 +98,7 @@ exec(char *path, char **argv)
   curproc->sz = sz;
   curproc->tf->eip = elf.entry;  // main
   curproc->tf->esp = sp;
+  curproc->stackSize = 1;
   switchuvm(curproc);
   freevm(oldpgdir);
   return 0;
