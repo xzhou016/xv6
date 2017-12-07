@@ -14,6 +14,7 @@
 // to a saved program counter, and then the first argument.
 
 // Fetch the int at addr from the current process.
+// updated for CS153
 int
 fetchint(uint addr, int *ip)
 {
@@ -28,6 +29,7 @@ fetchint(uint addr, int *ip)
 // Fetch the nul-terminated string at addr from the current process.
 // Doesn't actually copy the string - just sets *pp to point at it.
 // Returns length of string, not including nul.
+// Updated for CS153
 int
 fetchstr(uint addr, char **pp)
 {
@@ -55,6 +57,7 @@ argint(int n, int *ip)
 // Fetch the nth word-sized system call argument as a pointer
 // to a block of memory of size bytes.  Check that the pointer
 // lies within the process address space.
+// Updated for CS153
 int
 argptr(int n, char **pp, int size)
 {

@@ -58,9 +58,10 @@ exec(char *path, char **argv)
   iunlockput(ip);
   end_op();
   ip = 0;
-
+  // CS153 changes here
   // Allocate a single page containing the stack
-  // The stack begins at the top page of the user part of memory
+  // The stack begins at the top of the user part of memory (i.e. KERNBASE - 1)
+  // Set stack pointer initially to the "top" of the stack. (Actually upsidedown)
   sz = PGROUNDUP(sz);
   if((allocuvm(pgdir, STACKBASE - PGSIZE, STACKBASE)) == 0)
     goto bad;
