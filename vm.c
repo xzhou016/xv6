@@ -321,7 +321,7 @@ copyuvm(pde_t *pgdir, uint sz, uint sp)
   pte_t *pte;
   uint pa, i, cutoff, flags;
   char *mem;
-  // struct proc *curproc = myproc();
+  struct proc *curproc = myproc();
 
   if((d = setupkvm()) == 0)
     return 0;
@@ -338,7 +338,7 @@ copyuvm(pde_t *pgdir, uint sz, uint sp)
     if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
       goto bad;
   }
-  cutoff = STACKBASE - myproc()->stackSize * PGSIZE;
+  cutoff = STACKBASE - curproc->stackSize * PGSIZE;
   for(i = STACKBASE; i > cutoff; i -= PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
       panic("copyuvm: pte should exist");

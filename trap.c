@@ -76,6 +76,23 @@ trap(struct trapframe *tf)
     cprintf("cpu%d: spurious interrupt at %x:%x\n",
             cpuid(), tf->cs, tf->eip);
     lapiceoi();
+  case T_PGFLT:; 
+    // PAGEFAULT: 14 (CS153 added)
+    // Find the address that caused the pagefault and store in addr
+    // check to see if the address is right above the current top of the stack
+    // Use allocuvm to "grow" the stack
+    // Increment current process's stack size
+    struct proc *curproc = myproc();
+    uint addr = PGROUNDDOWN(rcr2()); 
+    uint TOS = STACKBASE - (curproc->stackSize * PGSIZE);
+
+    if (addr <= TOS){
+      if (allocuvm(curproc->pgdir, addr, TOS) == 0){ 
+        cprintf("Attempting to allocae nonexistent memory!\n");
+        exit();   
+      }
+    }
+    curproc->stackSize += 1; 
     break;
 
   //PAGEBREAK: 13
