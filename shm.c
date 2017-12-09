@@ -30,6 +30,7 @@ void shminit() {
 
 int shm_open(int id, char **pointer) {
   //CS 153
+  //HAS 2 CPUs, WILL SCREW UP PRINTING!!
   struct proc* curproc = myproc();
   //get the current process virtual memory
   uint va = PGROUNDUP(curproc->sz);
