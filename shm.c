@@ -29,9 +29,11 @@ void shminit() {
 }
 
 /*General information
-  * there are two for loops, each one looks through the shared mem table
-
-
+  * shm_open looks through the shm_table to see if this segment id already exists. 
+  * If it doesn't then it needs to allocate a page and map it, and store this information in the shm_table. 
+  * If the segment already exists, increase the refence count, 
+  * and use mappages to add the mapping between the virtual address and the physical address. 
+  * In either case, return the virtual address through the second parameter of the system call.
 */
 int shm_open(int id, char **pointer) {
   //CS 153
@@ -101,6 +103,11 @@ int shm_open(int id, char **pointer) {
   return -1; //major error, should never gotten here
 }
 
+/* General information
+* shm_close looks for the shared memory segment in shm_table.
+* If it finds it it decrements the reference count. And if it reaches zero, then it clears the shm_table. 
+* If not then do not need to free up the page since it is still mapped in the page table. Ok to leave it that way.
+*/
 
 int shm_close(int id) {
   //Get locks
