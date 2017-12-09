@@ -30,12 +30,33 @@ void shminit() {
 
 int shm_open(int id, char **pointer) {
 
-//you write this
+  struct proc* curproc = myproc();
+  //uint sz;
+  int i;
+  //sz = curproc->sz;
 
 
-
-
-return 0; //added to remove compiler warning -- you should decide what to return
+  //uint pa;
+  //CS 153 
+  //Get locks
+  acquire(&(shm_table.lock));
+  //Look through the shm_table
+  for (i = 0; i< 64; i++)
+  {
+    //if id for current process is found in shm_table
+    //update 
+    if (id == shm_table.shm_pages[i].id)
+    {
+      //?
+      if(mappages(curproc->pgdir, (void *)PGROUNDDOWN(curproc->sz), PGSIZE, V2P(id), PTE_W|PTE_U))
+        panic("Shared memory not mapped");
+    }else{
+      
+    }
+  }
+  //release lock
+  release(&(shm_table.lock));
+  return 0; //added to remove compiler warning -- you should decide what to return
 }
 
 
