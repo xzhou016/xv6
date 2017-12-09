@@ -81,14 +81,16 @@ trap(struct trapframe *tf)
     // Find the address that caused the pagefault and store in addr
     // check to see if the address is right above the current top of the stack
     // Use allocuvm to "grow" the stack
-    // Increment current process's stack size
+    // Increment process's total stack pages
+    // If you run out of space print the total stack pages and error message
     struct proc *curproc = myproc();
     uint addr = PGROUNDDOWN(rcr2()); 
     uint TOS = STACKBASE - (curproc->stackSize * PGSIZE);
 
-    if (addr <= TOS){
+    if (addr <= TOS && addr >= TOS - PGSIZE){
       if (allocuvm(curproc->pgdir, addr, TOS) == 0){ 
-        cprintf("Attempting to allocae nonexistent memory!\n");
+        cprintf("Total stack pages: %d", curproc->stackSize);
+        cprintf("\nTrap 14 Error: allocuvm out of memory!\n");
         exit();   
       }
     }
