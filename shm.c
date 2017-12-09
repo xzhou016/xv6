@@ -29,42 +29,96 @@ void shminit() {
 }
 
 int shm_open(int id, char **pointer) {
-
+  //CS 153
   struct proc* curproc = myproc();
-  //uint sz;
+  //get the current process virtual memory
+  uint va = PGROUNDUP(curproc->sz);
   int i;
-  //sz = curproc->sz;
-
-
-  //uint pa;
-  //CS 153 
+  char * new_page;
+ 
   //Get locks
+  initlock(&(shm_table.lock), "SHM lock");
   acquire(&(shm_table.lock));
   //Look through the shm_table
-  for (i = 0; i< 64; i++)
-  {
-    //if id for current process is found in shm_table
-    //update 
-    if (id == shm_table.shm_pages[i].id)
-    {
-      //?
-      if(mappages(curproc->pgdir, (void *)PGROUNDDOWN(curproc->sz), PGSIZE, V2P(id), PTE_W|PTE_U))
+  for (i = 0; i< 64; i++){
+    //Case 1: id for current process is found in shm_table
+    //update share mem, map physical to virtual
+    if (id == shm_table.shm_pages[i].id){
+      //mapping to the page table : {get current page , virtual mem, size of the page size = virtual page size,
+                                  // physical of the share mem table entry, write flag}
+      if(mappages(curproc->pgdir, (void *)va, PGSIZE, V2P(shm_table.shm_pages[i].frame), PTE_W|PTE_U))
         panic("Shared memory not mapped");
-    }else{
-      
+      //increment reference counter
+      shm_table.shm_pages[i].refcnt++;
+      //pass the new virtual address
+      *pointer = (char *)va;
+      curproc->sz = va;
+      //release lock
+      release(&(shm_table.lock));
+      return id; //done
     }
   }
+
+  //Case 2: Did not find the id
+  for (i = 0; i < 64; ++i){
+    //find the empty page entry
+    if (!shm_table.shm_pages[i].id){
+      //printf(1,"found empty table\n");
+      //allocate a new physical page
+      new_page = kalloc();
+      //set the page size
+      memset(new_page, 0, PGSIZE);
+      //assign the id to the current share mem page
+      shm_table.shm_pages[i].id = id;
+      //mapping to the page table : {get current page , assign frame , size of the page size = virtual page size,
+                                  // physical address, write flag}
+      if(mappages(curproc->pgdir, (void *)va, PGSIZE, V2P(new_page), PTE_W|PTE_U))
+        panic("Shared memory not mapped");
+      //assign the new va to frame
+      shm_table.shm_pages[i].frame = new_page;
+      //start new reference counter
+      shm_table.shm_pages[i].refcnt = 1;
+      //pass back virtual address
+      *pointer = (char *)va;
+      //assing virtual address to current sz
+      curproc->sz = va;
+      //release lock
+      release(&(shm_table.lock));
+      return 0;
+    }
+  }
+
+
+
   //release lock
-  release(&(shm_table.lock));
-  return 0; //added to remove compiler warning -- you should decide what to return
+  //release(&(shm_table.lock));
+  return -1; //major error, should never gotten here
 }
 
 
 int shm_close(int id) {
-//you write this too!
+  //Get locks
+  initlock(&(shm_table.lock), "SHM lock");
+  acquire(&(shm_table.lock));
+  int i;
 
+  //loop through the table to find id
+  for (i = 0; i < 64; ++i)
+  {  
+    if (shm_table.shm_pages[i].id == id)
+    {
+      //decrease reference count
+      shm_table.shm_pages[i].refcnt--;
+      //if refcnt @ 0, free the shared mem entry
+      if (shm_table.shm_pages[i].refcnt == 0)
+      {
+        shm_table.shm_pages[i].id =0;
+        shm_table.shm_pages[i].frame =0;
+      }
 
+    }
+  }
 
-
-return 0; //added to remove compiler warning -- you should decide what to return
+  release(&(shm_table.lock));
+  return 0; //added to remove compiler warning -- you should decide what to return
 }
