@@ -28,6 +28,11 @@ void shminit() {
   release(&(shm_table.lock));
 }
 
+/*General information
+  * there are two for loops, each one looks through the shared mem table
+
+
+*/
 int shm_open(int id, char **pointer) {
   //CS 153
   //HAS 2 CPUs, WILL SCREW UP PRINTING!!
@@ -71,7 +76,7 @@ int shm_open(int id, char **pointer) {
       memset(new_page, 0, PGSIZE);
       //assign the id to the current share mem page
       shm_table.shm_pages[i].id = id;
-      //mapping to the page table : {get current page , assign frame , size of the page size = virtual page size,
+      //mapping to the page table : {get current page , assign frame , page size = virtual page size,
                                   // physical address, write flag}
       if(mappages(curproc->pgdir, (void *)va, PGSIZE, V2P(new_page), PTE_W|PTE_U))
         panic("Shared memory not mapped");
