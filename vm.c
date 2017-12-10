@@ -339,6 +339,12 @@ copyuvm(pde_t *pgdir, uint sz, uint sp)
     if(mappages(d, (void*)i, PGSIZE, V2P(mem), flags) < 0)
       goto bad;
   }
+// Iterate over the stack and copy the pages one by one by:
+// 1. Reading the page table to get the PTE for the page
+// 2. Allocating a new physical frame
+// 3. Copying the page from the parent's memory to the new page
+// 4. Use mappages to map this new copy to the child address space 
+//    by adding a PTE to its page table
   cutoff = STACKBASE - curproc->stackSize * PGSIZE;
   for(i = STACKBASE; i > cutoff; i -= PGSIZE){
     if((pte = walkpgdir(pgdir, (void *) i, 0)) == 0)
